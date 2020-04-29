@@ -1,0 +1,54 @@
+clear;
+hd = pi/180;
+du = 180/pi;
+l1 = 100;
+l2 = 300;
+
+
+theta_2 = [];
+s_all = [];
+theta_1 = [];
+for i=1:361
+	theta1 = (i-1)*hd;
+	[theta2,s] = caculate_all(l1,l2,theta1);
+	theta_2 = [theta_2,theta2*du];
+	s_all = [s_all,s];
+    theta_1 = [theta_1,theta1*du];
+
+figure(1)
+subplot(2,2,1);
+plot(theta_1,theta_2);
+
+figure(2)
+m = moviein(20);
+j = 0;
+end
+for i = 1:5:361
+	j = j+1;
+	clf;
+	x(1) = 0;
+	y(1) = 0;
+	x(2) = cos((i-1)*hd)*l1;
+	y(2) = sin((i-1)*hd)*l1;
+	x(3) = s_all(i);
+	y(3) = 0;
+    x(4) = 0;
+    y(4) = 0;
+	plot(x,y);
+    hold on;
+    plot([0,(l1+l2)*1.5],[0,0]);
+    hold on;
+    rectangle('Position',[-l1,-l1,2*l1,2*l1],'Curvature',[1,1]);
+	axis([-l1*1.5,(l1+l2)*1.5,-l1*1.5,l1*1.5]);
+    axis equal;
+	m(j)=getframe;
+end
+movie(m,5,25);
+
+function [theta2,s] = caculate_all(l1,l2,theta1)
+theta2 = asin(l1*sin(theta1)/l2*(-1));
+s = l1*cos(theta1)+l2*cos(theta2);
+end
+
+
+
